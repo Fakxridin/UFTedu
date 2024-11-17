@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "build": "babel src -d dist",
-    "seeder": "node runSeeder.js"
+    "start": "node index.js",  
+    "build": "babel src -d dist", 
+    "seeder": "node runSeeder.js" 
   },
   "keywords": [],
   "author": "",
@@ -23,5 +22,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
+    
   }
 }
