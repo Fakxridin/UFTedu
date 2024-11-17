@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build": "babel src -d dist",
     "seeder": "node runSeeder.js"
   },
   "keywords": [],
