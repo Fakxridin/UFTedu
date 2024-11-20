@@ -1,13 +1,18 @@
 const FineRegister = require('../models/FineRegister');
+const mongoose = require('mongoose');
+const User = require('../models/User');
+const Lesson = require('../models/Lesson');
+const Group = require('../models/Group');
+const Fine = require('../models/Fine');
 
 // Get all fine registrations
 exports.getAllFineRegisters = async (req, res) => {
     try {
         const fineRegisters = await FineRegister.find()
-            .populate('student_id', 'name')   // Populate student details (modify as needed)
-            .populate('lesson_id', 'title')    // Populate lesson details (modify as needed)
-            .populate('group_id', 'name')      // Populate group details (modify as needed)
-            .populate('fine_id', 'name price'); // Populate fine details (modify as needed)
+            .populate('student_id', 'name')
+            .populate('lesson_id', 'title')
+            .populate('group_id', 'name')
+            .populate('fine_id', 'name price');
         
         res.status(200).json(fineRegisters);
     } catch (error) {
@@ -55,8 +60,14 @@ exports.createFineRegister = async (req, res) => {
             Fine.findById(fine_id),
         ]);
 
-        if (!studentExists || !lessonExists || !groupExists || !fineExists) {
-            return res.status(404).json({ success: false, message: 'One or more referenced documents do not exist.' });
+        if (!studentExists) return res.status(404).json({ success: false, message: 'Student not found.' });
+        if (!lessonExists) return res.status(404).json({ success: false, message: 'Lesson not found.' });
+        if (!groupExists) return res.status(404).json({ success: false, message: 'Group not found.' });
+        if (!fineExists) return res.status(404).json({ success: false, message: 'Fine not found.' });
+
+        // Validate price
+        if (typeof price !== 'number' || price <= 0) {
+            return res.status(400).json({ success: false, message: 'Invalid price value provided.' });
         }
 
         const newFineRegister = new FineRegister({
@@ -74,6 +85,7 @@ exports.createFineRegister = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
 // Update a fine registration by ID
 exports.updateFineRegister = async (req, res) => {
     try {

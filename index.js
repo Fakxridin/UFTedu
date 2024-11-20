@@ -12,7 +12,7 @@ const app = express(); // Create an Express application
 // Middleware
 app.use(express.json()); // Body parser middleware to handle JSON requests
 app.use(cors({
-    origin: ['http://localhost:8080', 'https://uftedu.onrender.com'], // Adjust with your actual frontend URLs
+    origin: ['http://localhost:8081', 'https://uftedu.onrender.com'],
     credentials: true,
   }));
   
